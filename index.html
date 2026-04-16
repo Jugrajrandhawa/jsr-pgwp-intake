@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a3a5c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>PGWP Client Intake — JSR Immigration Ltd.</title>
+  <meta name="description" content="Post-Graduate Work Permit intake form for JSR Immigration Ltd. clients." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Tokens ─────────────────────────────────────────────── */
+    :root {
+      --navy: #1a3a5c;
+      --navy-dark: #0f2540;
+      --navy-deeper: #091929;
+      --navy-tint: #d0dae6;
+      --navy-pale: #edf1f6;
+      --gold: #b8860b;
+      --gold-hover: #9a700a;
+      --gold-light: #fdf5e0;
+      --gold-border: rgba(184,134,11,0.3);
+      --green: #2a6e32;
+      --green-light: #d4ead6;
+      --red: #8b1c2e;
+      --red-light: #fce8ea;
+      --amber-light: #fff8e6;
+      --amber-border: #f0c040;
+
+      --bg: #f4f3ef;
+      --surface: #ffffff;
+      --surface2: #f9f8f6;
+      --surface3: #f1efe9;
+      --border: #d8d5cd;
+      --divider: #e8e5df;
+      --text: #1e1c17;
+      --text-mid: #4a4840;
+      --text-muted: #7a7870;
+      --text-faint: #b4b2aa;
+      --text-inv: #ffffff;
+
+      --r-sm: 0.5rem;
+      --r-md: 0.75rem;
+      --r-lg: 1rem;
+      --r-xl: 1.25rem;
+      --r-full: 9999px;
+
+      --sh-sm: 0 1px 4px rgba(26,58,92,0.07);
+      --sh-md: 0 4px 20px rgba(26,58,92,0.10);
+      --sh-lg: 0 8px 32px rgba(26,58,92,0.14);
+
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+      /* Mobile-first type scale */
+      --t-xs:  0.75rem;   /* 12px */
+      --t-sm:  0.875rem;  /* 14px */
+      --t-base:1rem;      /* 16px — minimum for iOS no-zoom */
+      --t-md:  1.125rem;  /* 18px */
+      --t-lg:  1.375rem;  /* 22px */
+      --t-xl:  1.75rem;   /* 28px */
+      --t-2xl: 2.25rem;   /* 36px */
+
+      /* Touch target minimum */
+      --touch: 48px;
+
+      --trans: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1520; --surface: #162030; --surface2: #1c2a3c; --surface3: #1a2535;
+      --border: #2c3d52; --divider: #243348;
+      --text: #d6dce5; --text-mid: #9aaab8; --text-muted: #6a7d90; --text-faint: #3e5060;
+      --navy: #5e90ba; --navy-dark: #7aacd0; --navy-tint: #1a2f44; --navy-pale: #172438;
+      --gold: #d4a540; --gold-hover: #e8bc57; --gold-light: #2a1e08; --gold-border: rgba(212,165,64,0.3);
+      --green: #56a862; --green-light: #1a3520;
+      --red: #e0606f; --red-light: #3a1220;
+      --amber-light: #2a1e06; --amber-border: #8a6a20;
+      --sh-sm: 0 1px 4px rgba(0,0,0,.3); --sh-md: 0 4px 20px rgba(0,0,0,.4); --sh-lg: 0 8px 32px rgba(0,0,0,.5);
+    }
+
+    /* ── Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: var(--ff-body);
+      font-size: var(--t-base);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      min-height: 100dvh;
+      /* Safe areas for notch phones */
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    img, svg { display: block; }
+    input, button, textarea, select { font: inherit; color: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    a { color: var(--navy); }
+    :focus-visible { outline: 2.5px solid var(--navy); outline-offset: 3px; border-radius: var(--r-sm); }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .site-header {
+      background: var(--navy);
+      color: var(--text-inv);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--sh-md);
+      padding-top: max(14px, env(safe-area-inset-top));
+    }
+    .hdr-logo {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--ff-display);
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .hdr-logo-bar { display: block; width: 26px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 3px; }
+    .hdr-text { flex: 1; min-width: 0; }
+    .hdr-firm { font-weight: 700; font-size: var(--t-sm); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hdr-sub { font-size: 0.7rem; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; text-transform: uppercase; }
+    .hdr-toggle {
+      width: var(--touch); height: var(--touch);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--r-full);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hdr-toggle:active { background: rgba(255,255,255,0.2); }
+
+    /* ── Hero ───────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #1a3a5c 0%, #0a2040 100%);
+      padding: 36px 20px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20.5V18H18v2.5L15.5 23h9L22 20.5zM20 5V2h-2v3H15v2h3v3h2V7h3V5z'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(184,134,11,0.2);
+      border: 1px solid rgba(184,134,11,0.45);
+      color: #f0d080;
+      padding: 5px 14px;
+      border-radius: var(--r-full);
+      font-size: var(--t-xs);
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-size: var(--t-sm);
+      color: rgba(255,255,255,0.72);
+      max-width: 520px;
+      margin: 0 auto 20px;
+      line-height: 1.65;
+    }
+    .hero-pills {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    }
+    .hero-pill {
+      display: flex; align-items: center; gap: 6px;
+      font-size: var(--t-xs);
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.07);
+      padding: 5px 12px;
+      border-radius: var(--r-full);
+    }
+    .hero-pill svg { color: var(--gold); flex-shrink: 0; }
+
+    /* ── Progress strip ─────────────────────────────────────── */
+    .progress-wrap {
+      background: var(--surface);
+      border-bottom: 1px solid var(--divider);
+      position: sticky;
+      top: 68px;
+      z-index: 190;
+      box-shadow: var(--sh-sm);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .progress-wrap::-webkit-scrollbar { display: none; }
+    .progress-inner {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      min-width: max-content;
+    }
+    .ps {
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ps-num {
+      width: 28px; height: 28px;
+      border-radius: var(--r-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--t-xs); font-weight: 700;
+      background: var(--surface3); color: var(--text-muted);
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: background var(--trans), border-color var(--trans), color var(--trans);
+    }
+    .ps-lbl {
+      font-size: var(--t-xs); font-weight: 500; color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .ps.active .ps-num { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .ps.active .ps-lbl { color: var(--navy); font-weight: 700; }
+    .ps.done .ps-num { background: var(--green); border-color: var(--green); color: #fff; }
+    .ps.done .ps-lbl { color: var(--green); }
+    .pl { flex: 0 0 24px; height: 2px; background: var(--border); margin: 0 2px; }
+    .ps.done ~ .pl, .ps.done + .pl { background: var(--green); }
+
+    /* ── Page wrapper ───────────────────────────────────────── */
+    .page { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+
+    /* ── Section card ───────────────────────────────────────── */
+    .sec { display: none; animation: fadeUp 0.28s ease; }
+    .sec.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--sh-sm);
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .card-head {
+      background: var(--navy-pale);
+      border-bottom: 1px solid var(--navy-tint);
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    [data-theme="dark"] .card-head { background: var(--navy-tint); border-color: var(--border); }
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: var(--r-md);
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg { color: #fff; }
+    .card-head-text { flex: 1; min-width: 0; }
+    .card-title { font-family: var(--ff-display); font-size: var(--t-md); font-weight: 700; color: var(--text); line-height: 1.2; }
+    .card-sub { font-size: var(--t-xs); color: var(--text-muted); margin-top: 2px; }
+    .card-badge {
+      font-size: var(--t-xs); font-weight: 700;
+      color: var(--gold); background: var(--gold-light);
+      padding: 3px 10px; border-radius: var(--r-full);
+      border: 1px solid var(--gold-border);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .card-body { padding: 20px; }
+
+    /* ── Fields ─────────────────────────────────────────────── */
+    /* Single-column by default (mobile-first) */
+    .fgrid { display: flex; flex-direction: column; gap: 16px; }
+
+    /* Two columns only on wider screens */
+    @media (min-width: 560px) {
+      .fgrid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .fgrid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+      .span-2 { grid-column: span 2; }
+      .span-3 { grid-column: span 3; }
+    }
+
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .flabel {
+      font-size: var(--t-sm);
+      font-weight: 600;
+      color: var(--text);
+      display: flex; align-items: center; gap: 4px;
+      line-height: 1.3;
+    }
+    .req { color: var(--red); font-size: var(--t-sm); }
+    .fhint { font-size: var(--t-xs); color: var(--text-muted); line-height: 1.4; }
+
+    /* Large touch-friendly inputs */
+    .finput {
+      width: 100%;
+      min-height: var(--touch);
+      padding: 12px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      color: var(--text);
+      font-size: var(--t-base); /* 16px — prevents iOS zoom */
+      line-height: 1.4;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color var(--trans), box-shadow var(--trans), background var(--trans);
+    }
+    .finput:hover { border-color: var(--text-muted); }
+    .finput:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(26,58,92,0.12);
+      background: var(--surface);
+    }
+    .finput.err { border-color: var(--red); }
+    .finput::placeholder { color: var(--text-faint); }
+    select.finput {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a7870' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+    textarea.finput { resize: vertical; min-height: 90px; padding-top: 12px; }
+    .ferr { font-size: var(--t-xs); color: var(--red); display: none; align-items: center; gap: 4px; }
+    .ferr.show { display: flex; }
+
+    /* ── Subsection label ───────────────────────────────────── */
+    .sublabel {
+      font-size: var(--t-xs); font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      background: var(--surface3);
+      border-radius: var(--r-sm);
+      border-left: 3px solid var(--gold);
+      margin-top: 4px;
+    }
+
+    /* ── Divider ────────────────────────────────────────────── */
+    .fdivider { height: 1px; background: var(--divider); margin: 4px 0; }
+
+    /* ── Conditional panel ──────────────────────────────────── */
+    .cond-panel {
+      background: var(--navy-pale);
+      border: 1px solid var(--navy-tint);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      margin-top: 4px;
+      display: none;
+    }
+    [data-theme="dark"] .cond-panel { background: var(--navy-tint); }
+    .cond-panel.show { display: block; }
+    .cond-panel .fgrid { gap: 14px; }
+
+    /* ── Repeater entries ───────────────────────────────────── */
+    .entry-wrap { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+    .entry {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      position: relative;
+    }
+    .entry-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .entry-num {
+      font-size: var(--t-xs); font-weight: 700;
+      color: var(--gold); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .remove-btn {
+      width: 32px; height: 32px;
+      border-radius: var(--r-full);
+      background: var(--red-light);
+      color: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; line-height: 1;
+      flex-shrink: 0;
+      transition: background var(--trans), color var(--trans);
+    }
+    .remove-btn:active { background: var(--red); color: #fff; }
+
+    .add-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      min-height: var(--touch);
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 2px dashed var(--border);
+      border-radius: var(--r-md);
+      color: var(--text-muted);
+      font-size: var(--t-sm); font-weight: 600;
+      margin-top: 12px;
+      transition: border-color var(--trans), color var(--trans), background var(--trans);
+    }
+    .add-btn:active { border-color: var(--navy); color: var(--navy); background: var(--navy-pale); }
+
+    /* ── Admissibility ──────────────────────────────────────── */
+    .aq {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color var(--trans);
+    }
+    .aq.flagged { border-color: var(--amber-border); background: var(--amber-light); }
+    .aq-main { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .aq-question-row { display: flex; gap: 10px; }
+    .aq-n { font-size: var(--t-xs); font-weight: 700; color: var(--text-faint); min-width: 18px; padding-top: 2px; flex-shrink: 0; }
+    .aq-text { font-size: var(--t-sm); color: var(--text); line-height: 1.55; flex: 1; }
+    .aq-text strong { font-weight: 600; }
+    /* Radio buttons as toggle pills — easy to tap */
+    .aq-toggle { display: flex; gap: 8px; }
+    .aq-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .aq-opt { display: block; }
+    .aq-opt label {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 40px; min-width: 70px;
+      padding: 8px 14px;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-size: var(--t-sm); font-weight: 600;
+      cursor: pointer;
+      transition: background var(--trans), border-color var(--trans), color var(--trans);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .aq-opt input:checked + label.yes-lbl { background: var(--red-light); border-color: var(--red); color: var(--red); }
+    .aq-opt input:checked + label.no-lbl { background: var(--green-light); border-color: var(--green); color: var(--green); }
+    .aq-detail {
+      display: none;
+      padding: 0 16px 14px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .aq-detail.show { display: flex; }
+
+    /* ── Checkboxes ─────────────────────────────────────────── */
+    .chk-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chk-row input[type="checkbox"] {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      accent-color: var(--navy);
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+    }
+    .chk-text { font-size: var(--t-sm); color: var(--text); line-height: 1.5; }
+
+    /* ── Declaration box ────────────────────────────────────── */
+    .decl-box {
+      background: var(--gold-light);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--r-md);
+      padding: 16px;
+      font-size: var(--t-sm);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .decl-box p + p { margin-top: 10px; }
+
+    /* ── Signature canvas ───────────────────────────────────── */
+    .sig-wrap {
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      background: var(--surface);
+      overflow: hidden;
+      position: relative;
+    }
+    #sigCanvas {
+      display: block;
+      width: 100%;
+      height: 140px;
+      touch-action: none; /* critical for mobile drawing */
+    }
+    .sig-placeholder {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      font-size: var(--t-sm);
+      color: var(--text-faint);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .sig-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px;
+    }
+    .sig-hint { font-size: var(--t-xs); color: var(--text-muted); }
+    .sig-clear {
+      font-size: var(--t-xs); font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      min-height: var(--touch);
+      display: flex; align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sig-clear:active { color: var(--red); }
+
+    /* ── Confidence banner ──────────────────────────────────── */
+    .conf-banner {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--navy-pale);
+      border: 1px solid var(--navy-tint);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      font-size: var(--t-xs);
+      color: var(--navy);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    [data-theme="dark"] .conf-banner { color: var(--navy-dark); }
+    .conf-banner svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Navigation ─────────────────────────────────────────── */
+    .fnav {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--divider);
+    }
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      min-height: var(--touch);
+      padding: 12px 20px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      font-size: var(--t-sm); font-weight: 600;
+      color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-back:active { background: var(--surface3); }
+    .btn-next {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: var(--touch);
+      padding: 14px 20px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: var(--r-md);
+      font-size: var(--t-sm); font-weight: 700;
+      box-shadow: var(--sh-sm);
+      -webkit-tap-highlight-color: transparent;
+      transition: background var(--trans), box-shadow var(--trans);
+    }
+    .btn-next:active { background: var(--navy-dark); box-shadow: none; }
+    .btn-submit {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 56px;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-deeper));
+      color: #fff;
+      border-radius: var(--r-md);
+      font-size: var(--t-md); font-weight: 700;
+      box-shadow: var(--sh-md);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-submit:active { opacity: 0.85; box-shadow: none; }
+    .btn-submit:disabled { opacity: 0.55; }
+
+    /* ── Optional badge ─────────────────────────────────────── */
+    .opt-badge {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: var(--r-full);
+      margin-left: 6px;
+    }
+
+    /* ── Spinner ────────────────────────────────────────────── */
+    .spin {
+      width: 20px; height: 20px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: rotate 0.65s linear infinite;
+    }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    /* ── Success ────────────────────────────────────────────── */
+    #success { display: none; text-align: center; padding: 48px 20px; }
+    #success.show { display: block; }
+    .success-icon {
+      width: 72px; height: 72px;
+      border-radius: var(--r-full);
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .success-icon svg { color: var(--green); }
+    #success h2 { font-family: var(--ff-display); font-size: var(--t-xl); margin-bottom: 12px; }
+    #success p { font-size: var(--t-sm); color: var(--text-muted); max-width: 420px; margin: 0 auto 8px; line-height: 1.6; }
+    .success-card {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 16px 24px;
+      background: var(--gold-light);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--r-lg);
+      text-align: center;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.55);
+      padding: 24px 20px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      text-align: center;
+      font-size: var(--t-xs);
+      margin-top: 60px;
+      line-height: 1.7;
+    }
+    .footer strong { color: #fff; }
+    .footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
+
+    /* ── Utility ────────────────────────────────────────────── */
+    .mt-4 { margin-top: 16px; }
+    .mt-3 { margin-top: 12px; }
+
+    /* ── Desktop tweaks ─────────────────────────────────────── */
+    @media (min-width: 640px) {
+      .hero { padding: 48px 32px 52px; }
+      .page { padding: 24px 24px 80px; }
+      .card-body { padding: 28px; }
+      .card-head { padding: 20px 28px; }
+      .hero-badge { font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ═════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="hdr-logo">
+    JSR
+    <span class="hdr-logo-bar"></span>
+  </div>
+  <div class="hdr-text">
+    <div class="hdr-firm">JSR Immigration Ltd.</div>
+    <div class="hdr-sub">RCIC #R712841 · Licensed Consultants</div>
+  </div>
+  <button class="hdr-toggle" id="themeBtn" aria-label="Toggle dark mode">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</header>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Secure &amp; Confidential
+  </div>
+  <h1>Post-Graduate Work Permit<br/>Client Intake Form</h1>
+  <p>Please complete all sections accurately. Your information is collected solely to prepare your PGWP application and is protected under professional privilege.</p>
+  <div class="hero-pills">
+    <div class="hero-pill">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      SSL Encrypted
+    </div>
+    <div class="hero-pill">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Based on IMM 5710
+    </div>
+    <div class="hero-pill">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Auto-saved to sheet
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROGRESS ═══════════════════════════════════════════════ -->
+<div class="progress-wrap">
+  <div class="progress-inner" id="progressInner">
+    <div class="ps active" data-s="1"><div class="ps-num">1</div><div class="ps-lbl">Personal</div></div>
+    <div class="pl"></div>
+    <div class="ps" data-s="2"><div class="ps-num">2</div><div class="ps-lbl">Travel</div></div>
+    <div class="pl"></div>
+    <div class="ps" data-s="3"><div class="ps-num">3</div><div class="ps-lbl">Education</div></div>
+    <div class="pl"></div>
+    <div class="ps" data-s="4"><div class="ps-num">4</div><div class="ps-lbl">Work</div></div>
+    <div class="pl"></div>
+    <div class="ps" data-s="5"><div class="ps-num">5</div><div class="ps-lbl">Admiss.</div></div>
+    <div class="pl"></div>
+    <div class="ps" data-s="6"><div class="ps-num">6</div><div class="ps-lbl">Sign</div></div>
+  </div>
+</div>
+
+<!-- ══ FORM ════════════════════════════════════════════════════ -->
+<div class="page">
+<form id="mainForm" novalidate>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 1 — PERSONAL INFORMATION
+═════════════════════════════════════════════════════════════ -->
+<div class="sec active" id="sec-1">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Personal Information</div>
+        <div class="card-sub">Basic identification and contact details</div>
+      </div>
+      <div class="card-badge">1 / 6</div>
+    </div>
+    <div class="card-body">
+
+      <div class="fgrid">
+
+        <div class="fg">
+          <label class="flabel" for="full_name">Full Legal Name (as on passport) <span class="req">*</span></label>
+          <input class="finput" type="text" id="full_name" name="full_name" placeholder="Last Name, First Name Middle Name" required autocomplete="name" />
+          <div class="ferr" id="full_name-err">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Please enter your full legal name
+          </div>
+        </div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="uci">UCI Number <span class="req">*</span></label>
+            <input class="finput" type="text" id="uci" name="uci" placeholder="e.g. 1234-5678" required inputmode="numeric" />
+            <div class="fhint">Found on any previous IRCC letter</div>
+          </div>
+          <div class="fg">
+            <label class="flabel" for="dob">Date of Birth <span class="req">*</span></label>
+            <input class="finput" type="date" id="dob" name="dob" required autocomplete="bday" />
+          </div>
+        </div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="country_birth">Country of Birth <span class="req">*</span></label>
+            <input class="finput" type="text" id="country_birth" name="country_birth" placeholder="e.g. India" required />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="citizenship">Country of Citizenship <span class="req">*</span></label>
+            <input class="finput" type="text" id="citizenship" name="citizenship" placeholder="e.g. India" required />
+          </div>
+        </div>
+
+        <div class="sublabel">Current Status in Canada</div>
+
+        <div class="fg">
+          <label class="flabel" for="current_status">Current Immigration Status <span class="req">*</span></label>
+          <select class="finput" id="current_status" name="current_status" required>
+            <option value="">— Select status —</option>
+            <option value="Study Permit - Valid">Study Permit — Valid</option>
+            <option value="Study Permit - Implied Status">Study Permit — Implied Status</option>
+            <option value="Visitor Visa">Visitor Visa</option>
+            <option value="Work Permit">Work Permit</option>
+            <option value="Permanent Resident">Permanent Resident</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="status_from">Status Valid From <span class="req">*</span></label>
+            <input class="finput" type="date" id="status_from" name="status_from" required />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="status_to">Status Valid To <span class="req">*</span></label>
+            <input class="finput" type="date" id="status_to" name="status_to" required />
+          </div>
+        </div>
+
+        <div class="sublabel">Passport Information</div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="passport_number">Passport Number <span class="req">*</span></label>
+            <input class="finput" type="text" id="passport_number" name="passport_number" placeholder="e.g. A1234567" required autocomplete="off" />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="passport_country">Country of Issue <span class="req">*</span></label>
+            <input class="finput" type="text" id="passport_country" name="passport_country" placeholder="e.g. India" required />
+          </div>
+        </div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="passport_issued">Issue Date <span class="req">*</span></label>
+            <input class="finput" type="date" id="passport_issued" name="passport_issued" required />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="passport_expiry">Expiry Date <span class="req">*</span></label>
+            <input class="finput" type="date" id="passport_expiry" name="passport_expiry" required />
+          </div>
+        </div>
+
+        <div class="sublabel">Marital Status</div>
+
+        <div class="fg">
+          <label class="flabel" for="marital_status">Marital Status <span class="req">*</span></label>
+          <select class="finput" id="marital_status" name="marital_status" required onchange="handleMarital(this.value)">
+            <option value="">— Select —</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Common-Law">Common-Law</option>
+            <option value="Separated">Separated</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+
+        <!-- Conditional: partner info (shown for Married, Common-Law, Separated, Divorced, Widowed) -->
+        <div class="cond-panel" id="partner-panel">
+          <div class="fgrid">
+            <div class="sublabel" style="margin-top:0;">Spouse / Partner Details</div>
+
+            <div class="fgrid-2">
+              <div class="fg">
+                <label class="flabel" for="partner_first">Partner First Name <span class="req">*</span></label>
+                <input class="finput" type="text" id="partner_first" name="partner_first" placeholder="First name" />
+              </div>
+              <div class="fg">
+                <label class="flabel" for="partner_last">Partner Last Name <span class="req">*</span></label>
+                <input class="finput" type="text" id="partner_last" name="partner_last" placeholder="Last name" />
+              </div>
+            </div>
+
+            <div class="fg">
+              <label class="flabel" for="partner_dob">Partner Date of Birth <span class="req">*</span></label>
+              <input class="finput" type="date" id="partner_dob" name="partner_dob" />
+            </div>
+
+            <!-- Date of marriage — for Married, Common-Law -->
+            <div class="fg" id="marriage-date-row">
+              <label class="flabel" for="date_of_marriage">Date of Marriage / Start of Relationship <span class="req">*</span></label>
+              <input class="finput" type="date" id="date_of_marriage" name="date_of_marriage" />
+            </div>
+
+            <!-- Date of separation / divorce / death — for Separated, Divorced, Widowed -->
+            <div class="fg" id="separation-date-row" style="display:none;">
+              <label class="flabel" for="date_of_separation" id="separation-date-label">Date of Separation / Divorce <span class="req">*</span></label>
+              <input class="finput" type="date" id="date_of_separation" name="date_of_separation" />
+            </div>
+          </div>
+        </div>
+
+        <div class="sublabel">Contact Information</div>
+
+        <div class="fg">
+          <label class="flabel" for="phone">Mobile Phone <span class="req">*</span></label>
+          <input class="finput" type="tel" id="phone" name="phone" placeholder="e.g. (647) 123-4567" required autocomplete="tel" inputmode="tel" />
+        </div>
+
+        <div class="fg">
+          <label class="flabel" for="email">Email Address <span class="req">*</span></label>
+          <input class="finput" type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" inputmode="email" />
+        </div>
+
+        <div class="fg">
+          <label class="flabel" for="alt_phone">Alternate Phone <span class="opt-badge">Optional</span></label>
+          <input class="finput" type="tel" id="alt_phone" name="alt_phone" placeholder="WhatsApp or home number" inputmode="tel" />
+        </div>
+
+        <div class="sublabel">Current Address in Canada</div>
+
+        <div class="fg">
+          <label class="flabel" for="address_street">Street Address <span class="req">*</span></label>
+          <input class="finput" type="text" id="address_street" name="address_street" placeholder="e.g. 123 Main Street, Apt 4B" required autocomplete="street-address" />
+        </div>
+
+        <div class="fgrid-3">
+          <div class="fg span-2">
+            <label class="flabel" for="address_city">City <span class="req">*</span></label>
+            <input class="finput" type="text" id="address_city" name="address_city" placeholder="e.g. Brampton" required autocomplete="address-level2" />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="address_province">Province <span class="req">*</span></label>
+            <select class="finput" id="address_province" name="address_province" required autocomplete="address-level1">
+              <option value="">—</option>
+              <option value="ON">ON</option>
+              <option value="BC">BC</option>
+              <option value="AB">AB</option>
+              <option value="QC">QC</option>
+              <option value="MB">MB</option>
+              <option value="SK">SK</option>
+              <option value="NS">NS</option>
+              <option value="NB">NB</option>
+              <option value="NL">NL</option>
+              <option value="PE">PE</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="flabel" for="postal_code">Postal Code <span class="req">*</span></label>
+          <input class="finput" type="text" id="postal_code" name="postal_code" placeholder="e.g. L6Y 2K3" required maxlength="7" autocomplete="postal-code" inputmode="text" style="text-transform:uppercase;" />
+        </div>
+
+      </div><!-- /fgrid -->
+    </div><!-- /card-body -->
+  </div><!-- /card -->
+
+  <div class="fnav">
+    <div style="flex:0 0 auto; font-size:var(--t-xs); color:var(--text-muted);">Step 1 of 6</div>
+    <button type="button" class="btn-next" onclick="goNext(1)">
+      Next: Entry to Canada
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div><!-- /sec-1 -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 2 — ENTRY TO CANADA
+═════════════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-2">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8l4 4-4 4M8 12h8"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Entry to Canada</div>
+        <div class="card-sub">First and most recent Canadian entry records</div>
+      </div>
+      <div class="card-badge">2 / 6</div>
+    </div>
+    <div class="card-body">
+
+      <div class="fgrid">
+
+        <div class="sublabel">First Entry to Canada</div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="first_entry_date">Date of First Entry <span class="req">*</span></label>
+            <input class="finput" type="date" id="first_entry_date" name="first_entry_date" required />
+          </div>
+          <div class="fg">
+            <label class="flabel" for="first_entry_place">Port of Entry <span class="req">*</span></label>
+            <input class="finput" type="text" id="first_entry_place" name="first_entry_place" placeholder="e.g. Toronto Pearson (YYZ)" required />
+          </div>
+        </div>
+
+        <div class="fdivider"></div>
+
+        <div class="sublabel">
+          Most Recent Entry to Canada
+          <span class="opt-badge">Optional</span>
+        </div>
+
+        <div class="fgrid-2">
+          <div class="fg">
+            <label class="flabel" for="recent_entry_date">Date of Most Recent Entry</label>
+            <input class="finput" type="date" id="recent_entry_date" name="recent_entry_date" />
+            <div class="fhint">Only if different from first entry above</div>
+          </div>
+          <div class="fg">
+            <label class="flabel" for="recent_entry_place">Port of Entry</label>
+            <input class="finput" type="text" id="recent_entry_place" name="recent_entry_place" placeholder="e.g. Vancouver (YVR)" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button type="button" class="btn-back" onclick="goTo(1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <button type="button" class="btn-next" onclick="goNext(2)">
+      Next: Education
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div><!-- /sec-2 -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 3 — EDUCATION
+═════════════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-3">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Education History in Canada</div>
+        <div class="card-sub">Add all Canadian institutions attended. Most recent first.</div>
+      </div>
+      <div class="card-badge">3 / 6</div>
+    </div>
+    <div class="card-body">
+
+      <div class="entry-wrap" id="edu-entries"></div>
+
+      <button type="button" class="add-btn" id="addEduBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Another Institution
+      </button>
+
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button type="button" class="btn-back" onclick="goTo(2)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <button type="button" class="btn-next" onclick="goNext(3)">
+      Next: Employment
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div><!-- /sec-3 -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 4 — EMPLOYMENT
+═════════════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-4">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Employment History</div>
+        <div class="card-sub">All jobs in Canada and abroad (past 10 years). Leave blank if not applicable.</div>
+      </div>
+      <div class="card-badge">4 / 6</div>
+    </div>
+    <div class="card-body">
+
+      <div class="entry-wrap" id="emp-entries"></div>
+
+      <button type="button" class="add-btn" id="addEmpBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Employment Entry
+      </button>
+
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button type="button" class="btn-back" onclick="goTo(3)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <button type="button" class="btn-next" onclick="goNext(4)">
+      Next: Admissibility
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div><!-- /sec-4 -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 5 — ADMISSIBILITY
+═════════════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-5">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Admissibility Questions</div>
+        <div class="card-sub">Mirrors IMM 5710. A "Yes" does not automatically bar your application.</div>
+      </div>
+      <div class="card-badge">5 / 6</div>
+    </div>
+    <div class="card-body">
+      <div class="fgrid" id="aq-container">
+
+        <!-- Q1 -->
+        <div class="aq" id="aq1">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">1.</div>
+              <div class="aq-text">Have you ever been <strong>charged with, convicted of, or subject to any criminal proceedings</strong> in Canada or any other country?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_criminal" id="aq1y" value="Yes" onchange="showAQ('aq1',true)"><label class="yes-lbl" for="aq1y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_criminal" id="aq1n" value="No" onchange="showAQ('aq1',false)"><label class="no-lbl" for="aq1n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq1-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_criminal_detail" rows="3" placeholder="Country, nature of charge/conviction, date, outcome, sentence..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="aq" id="aq2">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">2.</div>
+              <div class="aq-text">Have you ever been <strong>refused a visa, permit, or entry</strong> to Canada or any other country?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_refusal" id="aq2y" value="Yes" onchange="showAQ('aq2',true)"><label class="yes-lbl" for="aq2y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_refusal" id="aq2n" value="No" onchange="showAQ('aq2',false)"><label class="no-lbl" for="aq2n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq2-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_refusal_detail" rows="3" placeholder="Country, application type, year, reason given..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="aq" id="aq3">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">3.</div>
+              <div class="aq-text">Have you <strong>previously applied for any status inside Canada</strong> (extension, restoration, PGWP, PR)?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_prev_canada" id="aq3y" value="Yes" onchange="showAQ('aq3',true)"><label class="yes-lbl" for="aq3y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_prev_canada" id="aq3n" value="No" onchange="showAQ('aq3',false)"><label class="no-lbl" for="aq3n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq3-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_prev_canada_detail" rows="3" placeholder="Application type, date, outcome, any outstanding applications..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="aq" id="aq4">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">4.</div>
+              <div class="aq-text">Have you ever been <strong>deported, removed, or subject to a removal order</strong> from Canada or any country?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_removal" id="aq4y" value="Yes" onchange="showAQ('aq4',true)"><label class="yes-lbl" for="aq4y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_removal" id="aq4n" value="No" onchange="showAQ('aq4',false)"><label class="no-lbl" for="aq4n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq4-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_removal_detail" rows="3" placeholder="Country, year, type of order, any current ban..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="aq" id="aq5">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">5.</div>
+              <div class="aq-text">Have you ever <strong>overstayed your authorized period</strong> in Canada or any other country?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_overstay" id="aq5y" value="Yes" onchange="showAQ('aq5',true)"><label class="yes-lbl" for="aq5y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_overstay" id="aq5n" value="No" onchange="showAQ('aq5',false)"><label class="no-lbl" for="aq5n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq5-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_overstay_detail" rows="3" placeholder="Country, approximate dates, circumstances..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="aq" id="aq6">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">6.</div>
+              <div class="aq-text">Have you been <strong>diagnosed with or treated for tuberculosis (TB)</strong>, or required a TB-related medical exam?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_tb" id="aq6y" value="Yes" onchange="showAQ('aq6',true)"><label class="yes-lbl" for="aq6y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_tb" id="aq6n" value="No" onchange="showAQ('aq6',false)"><label class="no-lbl" for="aq6n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq6-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_tb_detail" rows="3" placeholder="Date, country, treatment received, current status..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="aq" id="aq7">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">7.</div>
+              <div class="aq-text">Do you have any <strong>pending immigration application</strong> currently with IRCC (other than this PGWP)?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_pending" id="aq7y" value="Yes" onchange="showAQ('aq7',true)"><label class="yes-lbl" for="aq7y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_pending" id="aq7n" value="No" onchange="showAQ('aq7',false)"><label class="no-lbl" for="aq7n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq7-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_pending_detail" rows="3" placeholder="Application type, submitted date, application number if known..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="aq" id="aq8">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">8.</div>
+              <div class="aq-text">Have you ever <strong>provided false or misleading information</strong> on any immigration application (misrepresentation)?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_misrep" id="aq8y" value="Yes" onchange="showAQ('aq8',true)"><label class="yes-lbl" for="aq8y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_misrep" id="aq8n" value="No" onchange="showAQ('aq8',false)"><label class="no-lbl" for="aq8n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq8-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_misrep_detail" rows="3" placeholder="Please explain fully — your consultant will advise..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="aq" id="aq9">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">9.</div>
+              <div class="aq-text">Have you ever been <strong>associated with any organization engaged in terrorism, war crimes, or organized crime</strong>?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_security" id="aq9y" value="Yes" onchange="showAQ('aq9',true)"><label class="yes-lbl" for="aq9y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_security" id="aq9n" value="No" onchange="showAQ('aq9',false)"><label class="no-lbl" for="aq9n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq9-det">
+            <label class="flabel">Please provide details:</label>
+            <textarea class="finput" name="aq_security_detail" rows="3" placeholder="Nature and extent of involvement..."></textarea>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="aq" id="aq10">
+          <div class="aq-main">
+            <div class="aq-question-row">
+              <div class="aq-n">10.</div>
+              <div class="aq-text">Is your <strong>study permit currently valid</strong> or are you on <strong>maintained / implied status</strong> pending a decision?</div>
+            </div>
+            <div class="aq-toggle">
+              <div class="aq-opt"><input type="radio" name="aq_sp_valid" id="aq10y" value="Yes"><label class="no-lbl" for="aq10y">Yes</label></div>
+              <div class="aq-opt"><input type="radio" name="aq_sp_valid" id="aq10n" value="No" onchange="showAQ('aq10',true)"><label class="yes-lbl" for="aq10n">No</label></div>
+            </div>
+          </div>
+          <div class="aq-detail" id="aq10-det">
+            <label class="flabel">Please explain your current status:</label>
+            <textarea class="finput" name="aq_sp_valid_detail" rows="3" placeholder="Include any restoration application details..."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button type="button" class="btn-back" onclick="goTo(4)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <button type="button" class="btn-next" onclick="goNext(5)">
+      Next: Declaration
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div><!-- /sec-5 -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 6 — DECLARATION & SIGNATURE
+═════════════════════════════════════════════════════════════ -->
+<div class="sec" id="sec-6">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="card-head-text">
+        <div class="card-title">Declaration &amp; Signature</div>
+        <div class="card-sub">Read carefully before signing</div>
+      </div>
+      <div class="card-badge">6 / 6</div>
+    </div>
+    <div class="card-body">
+
+      <div class="conf-banner">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Your information is transmitted securely and stored only in your consultant's private Google Sheet. It will not be shared with any third party without your written consent.
+      </div>
+
+      <div class="decl-box">
+        <p><strong>Declaration of Accuracy:</strong> I declare that the information provided in this intake form is true, complete, and accurate to the best of my knowledge and belief. I understand that providing false or misleading information constitutes misrepresentation under section 40 of the <em>Immigration and Refugee Protection Act</em> (IRPA), which may result in a finding of inadmissibility.</p>
+        <p><strong>Authorization:</strong> I authorize JSR Immigration Ltd. and its licensed representatives to use the information in this form to prepare and submit my PGWP application and communicate with IRCC on my behalf.</p>
+      </div>
+
+      <div class="fgrid mt-4">
+
+        <div class="fg">
+          <label class="flabel" for="sig_name">Full Legal Name (Typed Signature) <span class="req">*</span></label>
+          <input class="finput" type="text" id="sig_name" name="sig_name" placeholder="Type your full legal name" required autocomplete="name" />
+          <div class="fhint">Typing your name constitutes a legal electronic signature</div>
+        </div>
+
+        <div class="fg">
+          <label class="flabel" for="sig_date">Date <span class="req">*</span></label>
+          <input class="finput" type="date" id="sig_date" name="sig_date" required />
+        </div>
+
+        <div class="fg">
+          <label class="flabel">Handwritten Signature <span class="opt-badge">Optional</span></label>
+          <div class="sig-wrap">
+            <canvas id="sigCanvas"></canvas>
+            <div class="sig-placeholder" id="sigPlaceholder">
+              ✍️ Tap here and draw your signature
+            </div>
+          </div>
+          <div class="sig-row">
+            <div class="sig-hint">Use your finger or stylus to sign</div>
+            <button type="button" class="sig-clear" onclick="clearSig()">Clear</button>
+          </div>
+        </div>
+
+        <div class="fgrid" style="gap:10px;">
+          <label class="chk-row">
+            <input type="checkbox" id="consent1" name="consent1" required />
+            <span class="chk-text">I confirm all information is true and accurate. I understand the consequences of misrepresentation under IRPA s.40. <span class="req">*</span></span>
+          </label>
+          <label class="chk-row">
+            <input type="checkbox" id="consent2" name="consent2" required />
+            <span class="chk-text">I authorize JSR Immigration Ltd. (RCIC #R712841) to act as my representative for this PGWP application. <span class="req">*</span></span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="fnav">
+    <button type="button" class="btn-back" onclick="goTo(5)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </button>
+    <button type="button" class="btn-submit" id="submitBtn" onclick="doSubmit()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      Submit Application
+    </button>
+  </div>
+</div><!-- /sec-6 -->
+
+</form>
+
+<!-- ══ SUCCESS ════════════════════════════════════════════════ -->
+<div id="success">
+  <div class="success-icon">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  </div>
+  <h2>Form Received</h2>
+  <p>Your intake form has been securely submitted to JSR Immigration Ltd.</p>
+  <p>Your consultant will review your information and contact you within 1–2 business days.</p>
+  <div class="success-card">
+    <div style="font-size:var(--t-xs); color:var(--text-muted); margin-bottom:4px;">RCIC #R712841</div>
+    <div style="font-weight:700; font-size:var(--t-sm);">JSR Immigration Ltd.</div>
+    <div style="font-size:var(--t-xs); color:var(--text-muted);">Brampton, Ontario &nbsp;·&nbsp; <a href="mailto:info@jsrimmigration.com">info@jsrimmigration.com</a></div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer class="footer">
+  <strong>JSR Immigration Ltd.</strong> &nbsp;·&nbsp; RCIC #R712841 &nbsp;·&nbsp; Member in Good Standing, CICC<br/>
+  Brampton, Ontario &nbsp;·&nbsp; <a href="mailto:info@jsrimmigration.com">info@jsrimmigration.com</a><br/>
+  <span style="font-size:0.68rem; opacity:0.6; display:block; margin-top:6px;">This form is for JSR Immigration Ltd. clients only. All information is protected under RCIC professional confidentiality obligations.</span>
+</footer>
+
+<!-- ══ SCRIPT ═════════════════════════════════════════════════ -->
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhFTApQSpyT2Q03-zpKnM7qC1FhqhIKwu6aNtzzi-9FgvUwNP401diCigYl0CHUqIO/exec';
+
+// ── THEME ───────────────────────────────────────────────────────
+(function(){
+  const btn = document.getElementById('themeBtn');
+  const root = document.documentElement;
+  let dark = matchMedia('(prefers-color-scheme:dark)').matches;
+  function apply(){
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.innerHTML = dark
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  apply();
+  btn.addEventListener('click', () => { dark = !dark; apply(); });
+})();
+
+// ── NAVIGATION ──────────────────────────────────────────────────
+let current = 1;
+
+function goTo(n) {
+  document.getElementById('sec-' + current).classList.remove('active');
+  document.getElementById('sec-' + n).classList.add('active');
+  current = n;
+  // Update progress
+  document.querySelectorAll('.ps').forEach(el => {
+    const s = parseInt(el.dataset.s);
+    el.classList.remove('active','done');
+    if (s === n) el.classList.add('active');
+    if (s < n) el.classList.add('done');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Scroll progress bar to active step
+  const activePill = document.querySelector('.ps.active');
+  if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function goNext(from) {
+  if (validateSec(from)) goTo(from + 1);
+}
+
+function validateSec(n) {
+  const sec = document.getElementById('sec-' + n);
+  const fields = sec.querySelectorAll('[required]');
+  let ok = true;
+  fields.forEach(f => {
+    const errId = f.id + '-err';
+    const err = document.getElementById(errId);
+    // Skip hidden fields
+    if (f.closest('[style*="display:none"]') || f.closest('.cond-panel:not(.show)')) {
+      if (err) err.classList.remove('show');
+      f.classList.remove('err');
+      return;
+    }
+    const val = f.type === 'checkbox' ? f.checked : f.value.trim();
+    if (!val) {
+      f.classList.add('err');
+      if (err) err.classList.add('show');
+      if (ok) { f.focus(); f.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      ok = false;
+    } else {
+      f.classList.remove('err');
+      if (err) err.classList.remove('show');
+    }
+  });
+  return ok;
+}
+
+// Clear error on input
+document.addEventListener('input', e => {
+  if (e.target.classList.contains('finput')) {
+    e.target.classList.remove('err');
+    const err = document.getElementById(e.target.id + '-err');
+    if (err) err.classList.remove('show');
+  }
+});
+
+// ── MARITAL STATUS CONDITIONAL ──────────────────────────────────
+function handleMarital(val) {
+  const panel = document.getElementById('partner-panel');
+  const marriageRow = document.getElementById('marriage-date-row');
+  const sepRow = document.getElementById('separation-date-row');
+  const sepLabel = document.getElementById('separation-date-label');
+
+  if (['Married','Common-Law'].includes(val)) {
+    panel.classList.add('show');
+    marriageRow.style.display = '';
+    sepRow.style.display = 'none';
+    sepLabel.innerHTML = 'Date of Marriage / Relationship Start <span class="req">*</span>';
+  } else if (val === 'Separated') {
+    panel.classList.add('show');
+    marriageRow.style.display = 'none';
+    sepRow.style.display = '';
+    sepLabel.innerHTML = 'Date of Separation <span class="req">*</span>';
+  } else if (val === 'Divorced') {
+    panel.classList.add('show');
+    marriageRow.style.display = 'none';
+    sepRow.style.display = '';
+    sepLabel.innerHTML = 'Date of Divorce <span class="req">*</span>';
+  } else if (val === 'Widowed') {
+    panel.classList.add('show');
+    marriageRow.style.display = 'none';
+    sepRow.style.display = '';
+    sepLabel.innerHTML = 'Date of Spouse\'s Passing <span class="req">*</span>';
+  } else {
+    panel.classList.remove('show');
+  }
+}
+
+// ── ADMISSIBILITY TOGGLES ───────────────────────────────────────
+function showAQ(id, yes) {
+  const card = document.getElementById(id);
+  const det = document.getElementById(id + '-det');
+  card.classList.toggle('flagged', yes);
+  det.classList.toggle('show', yes);
+}
+
+// ── EDUCATION ENTRIES ───────────────────────────────────────────
+let eduCount = 0;
+function addEdu() {
+  eduCount++;
+  const n = eduCount;
+  const el = document.createElement('div');
+  el.className = 'entry';
+  el.id = 'edu-' + n;
+  el.innerHTML = `
+    <div class="entry-hdr">
+      <div class="entry-num">Institution #${n}</div>
+      ${n > 1 ? `<button type="button" class="remove-btn" onclick="removeEntry('edu-${n}')" aria-label="Remove">×</button>` : ''}
+    </div>
+    <div class="fgrid">
+      <div class="fg">
+        <label class="flabel">Institution Name ${n===1?'<span class="req">*</span>':''}</label>
+        <input class="finput" type="text" name="edu_name_${n}" placeholder="e.g. Humber College" ${n===1?'required':''} />
+      </div>
+      <div class="fg">
+        <label class="flabel">DLI Number ${n===1?'<span class="req">*</span>':''}</label>
+        <input class="finput" type="text" name="edu_dli_${n}" placeholder="e.g. O19395641442" ${n===1?'required':''} />
+      </div>
+      <div class="fg">
+        <label class="flabel">Program / Field of Study ${n===1?'<span class="req">*</span>':''}</label>
+        <input class="finput" type="text" name="edu_program_${n}" placeholder="e.g. Business Administration" ${n===1?'required':''} />
+      </div>
+      <div class="fg">
+        <label class="flabel">Credential Awarded</label>
+        <select class="finput" name="edu_credential_${n}">
+          <option value="">— Select —</option>
+          <option>Degree (Bachelor's)</option>
+          <option>Degree (Master's)</option>
+          <option>Degree (PhD)</option>
+          <option>Advanced Diploma (3-year)</option>
+          <option>Diploma (2-year)</option>
+          <option>Diploma (1-year)</option>
+          <option>Post-Graduate Certificate/Diploma</option>
+          <option>Certificate</option>
+        </select>
+      </div>
+      <div class="fgrid-2">
+        <div class="fg">
+          <label class="flabel">Program Start Date ${n===1?'<span class="req">*</span>':''}</label>
+          <input class="finput" type="date" name="edu_start_${n}" ${n===1?'required':''} />
+        </div>
+        <div class="fg">
+          <label class="flabel">Program End Date ${n===1?'<span class="req">*</span>':''}</label>
+          <input class="finput" type="date" name="edu_end_${n}" ${n===1?'required':''} />
+        </div>
+      </div>
+      <div class="fg">
+        <label class="flabel">Graduation / Completion Date</label>
+        <input class="finput" type="date" name="edu_grad_${n}" />
+      </div>
+      <div class="fg">
+        <label class="flabel">Institution Address</label>
+        <input class="finput" type="text" name="edu_address_${n}" placeholder="City, Province" />
+      </div>
+    </div>
+  `;
+  document.getElementById('edu-entries').appendChild(el);
+}
+document.getElementById('addEduBtn').addEventListener('click', addEdu);
+addEdu(); // Start with 1 entry
+
+// ── EMPLOYMENT ENTRIES ──────────────────────────────────────────
+let empCount = 0;
+function addEmp() {
+  empCount++;
+  const n = empCount;
+  const el = document.createElement('div');
+  el.className = 'entry';
+  el.id = 'emp-' + n;
+  el.innerHTML = `
+    <div class="entry-hdr">
+      <div class="entry-num">Employment #${n}</div>
+      ${n > 1 ? `<button type="button" class="remove-btn" onclick="removeEntry('emp-${n}')" aria-label="Remove">×</button>` : ''}
+    </div>
+    <div class="fgrid">
+      <div class="fg">
+        <label class="flabel">Employer Name</label>
+        <input class="finput" type="text" name="emp_name_${n}" placeholder="e.g. Tim Hortons Inc." />
+      </div>
+      <div class="fg">
+        <label class="flabel">Job Title</label>
+        <input class="finput" type="text" name="emp_title_${n}" placeholder="e.g. Barista" />
+      </div>
+      <div class="fg">
+        <label class="flabel">Full-Time or Part-Time?</label>
+        <select class="finput" name="emp_type_${n}">
+          <option value="">— Select —</option>
+          <option>Full-Time</option>
+          <option>Part-Time</option>
+          <option>Contract / Casual</option>
+        </select>
+      </div>
+      <div class="fgrid-2">
+        <div class="fg">
+          <label class="flabel">Start Date</label>
+          <input class="finput" type="date" name="emp_start_${n}" />
+        </div>
+        <div class="fg">
+          <label class="flabel">End Date</label>
+          <input class="finput" type="text" name="emp_end_${n}" placeholder="YYYY-MM-DD or Present" />
+        </div>
+      </div>
+      <div class="fg">
+        <label class="flabel">Employer Address</label>
+        <input class="finput" type="text" name="emp_addr_${n}" placeholder="City, Province / Country" />
+      </div>
+      <div class="fg">
+        <label class="flabel">Reason for Leaving</label>
+        <input class="finput" type="text" name="emp_reason_${n}" placeholder="e.g. Graduated / Contract ended" />
+      </div>
+    </div>
+  `;
+  document.getElementById('emp-entries').appendChild(el);
+}
+document.getElementById('addEmpBtn').addEventListener('click', addEmp);
+addEmp();
+
+function removeEntry(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+// ── SIGNATURE CANVAS ─────────────────────────────────────────────
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+let signed = false;
+
+function resizeCanvas() {
+  const w = canvas.parentElement.clientWidth;
+  canvas.width = w * window.devicePixelRatio;
+  canvas.height = 140 * window.devicePixelRatio;
+  canvas.style.width = w + 'px';
+  canvas.style.height = '140px';
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#1e1c17';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function getXY(e) {
+  const r = canvas.getBoundingClientRect();
+  if (e.touches && e.touches[0]) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; const p = getXY(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+canvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const p = getXY(e); ctx.lineTo(p.x, p.y); ctx.stroke();
+  signed = true; document.getElementById('sigPlaceholder').style.display = 'none';
+});
+canvas.addEventListener('mouseup', () => { drawing = false; });
+canvas.addEventListener('mouseleave', () => { drawing = false; });
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault(); drawing = true;
+  const p = getXY(e); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+}, { passive: false });
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!drawing) return;
+  const p = getXY(e); ctx.lineTo(p.x, p.y); ctx.stroke();
+  signed = true; document.getElementById('sigPlaceholder').style.display = 'none';
+}, { passive: false });
+canvas.addEventListener('touchend', () => { drawing = false; });
+
+function clearSig() {
+  ctx.clearRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
+  signed = false;
+  document.getElementById('sigPlaceholder').style.display = '';
+}
+
+// ── COLLECT DATA ─────────────────────────────────────────────────
+function collect() {
+  const d = {};
+  new FormData(document.getElementById('mainForm')).forEach((v, k) => d[k] = v);
+
+  // Radios not captured by FormData in all browsers
+  ['aq_criminal','aq_refusal','aq_prev_canada','aq_removal','aq_overstay',
+   'aq_tb','aq_pending','aq_misrep','aq_security','aq_sp_valid'].forEach(n => {
+    const el = document.querySelector(`input[name="${n}"]:checked`);
+    d[n] = el ? el.value : '';
+  });
+
+  d.signature_image = signed ? canvas.toDataURL('image/png') : '';
+  d.submission_timestamp = new Date().toISOString();
+  return d;
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────────
+async function doSubmit() {
+  if (!validateSec(6)) return;
+
+  const c1 = document.getElementById('consent1');
+  const c2 = document.getElementById('consent2');
+  if (!c1.checked || !c2.checked) {
+    alert('Please check both authorization boxes before submitting.');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Submitting…';
+
+  const data = collect();
+
+  if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwhFTApQSpyT2Q03-zpKnM7qC1FhqhIKwu6aNtzzi-9FgvUwNP401diCigYl0CHUqIO/exec') {
+    // Demo mode
+    await new Promise(r => setTimeout(r, 1200));
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Submit Application';
+    alert('Submission failed. Please try again or email info@jsrimmigration.com directly.');
+  }
+}
+
+// Pre-fill today's date in signature
+document.getElementById('sig_date').valueAsDate = new Date();
+</script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  var scrollRaf=0;
+  function emitScroll(){
+    scrollRaf=0;
+    var x=window.scrollX||window.pageXOffset||0;
+    var y=window.scrollY||window.pageYOffset||0;
+    window.parent.postMessage({type:'INLINE_EDIT_SCROLL',scrollX:x,scrollY:y},'*');
+  }
+  window.addEventListener('scroll',function(){
+    if(scrollRaf)return;
+    scrollRaf=requestAnimationFrame(emitScroll);
+  },{passive:true,capture:true});
+  emitScroll();
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
